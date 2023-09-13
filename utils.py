@@ -1,11 +1,12 @@
 import inspect
 import sys
 
-from contrib.filters import spam
 from contrib.filters.abstract import AbstractSpamFilter
 
 
 def get_spam_filter_classes() -> list[AbstractSpamFilter]:
+    from contrib.filters import spam
+
     classes = []
 
     for name, obj in inspect.getmembers(sys.modules[spam.__name__]):
@@ -13,3 +14,13 @@ def get_spam_filter_classes() -> list[AbstractSpamFilter]:
             classes.append(obj)
 
     return classes
+
+
+def use_filter_class(use: bool = True):
+    def wrapper(cls: AbstractSpamFilter):
+        if not use:
+            cls.filter = lambda string: False
+
+        return cls
+
+    return wrapper
