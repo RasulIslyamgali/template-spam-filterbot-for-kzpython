@@ -1,3 +1,7 @@
+"""
+Add your filter classes here
+"""
+
 from .abstract import AbstractSpamFilter
 
 
